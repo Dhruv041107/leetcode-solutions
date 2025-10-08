@@ -1,17 +1,19 @@
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        vector<char>lastIndex(26,-1);
-        int ans=0;
-        int start=0;
-        for( int end=0;end<s.length();end++){
-            int idx=s[end]-'a';
-            if(lastIndex[idx]>=start){
-                start=lastIndex[idx]+1;
+        vector<int> hash(256, -1);
+        int l=0,r=0,maxLen=0;
+
+        while(r<s.length()){
+            if(hash[s[r]]!=-1){
+                if(hash[s[r]]>=l){
+                    l=hash[s[r]]+1;
+                }
             }
-            lastIndex[idx]=end;
-            ans=max(ans,end-start+1);
+            maxLen=max(maxLen,r-l+1);
+            hash[s[r]]=r;
+            r++;
         }
-        return ans;
+        return maxLen;
     }
 };
